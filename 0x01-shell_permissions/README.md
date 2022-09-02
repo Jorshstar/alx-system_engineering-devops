@@ -1,1 +1,1 @@
-Write a script that changes the owner of the file hello to the user betty
+Write a script that sets the mode of the file hello the same as olleh’s mode

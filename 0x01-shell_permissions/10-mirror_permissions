@@ -1,0 +1,2 @@
+#!/bin/bash
+chmos --reference-olleh hello
