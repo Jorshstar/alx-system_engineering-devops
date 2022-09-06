@@ -1,1 +1,1 @@
-Write a script that displays a confused smiley "(Ôo)'
+Display the first 10 lines of /etc/passwd
