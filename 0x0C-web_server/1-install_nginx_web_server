@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
-# This script installs and configures Nginx web server on Ubuntu to serve a "Hello World!" page
+# installs nginx and configures it on a remote server
 
-# Update packages and install Nginx
-sudo apt-get update -y
-sudo apt-get install nginx -y
-
-# Configure Nginx to listen on port 80 and serve "Hello World!" page
-sudo sed -i '/listen \[::\]:80 default_server/ s/# *//' /etc/nginx/sites-available/default
-echo "server { listen 80 default_server; listen [::]:80 default_server; root /var/www/html; index index.html; server_name _; location / { add_header 'Content-Type' 'text/html'; echo 'Hello World!'; } }" | sudo tee /etc/nginx/sites-available/default > /dev/null
-
-# Restart Nginx service
-sudo kill -s HUP $(cat /var/run/nginx.pid)
+apt-get -y update
+apt-get -y install nginx
+ufw allow 'Nginx HTTP'
+echo 'Hello World!' > /var/www/html/index.nginx-debian.html
+service nginx start
