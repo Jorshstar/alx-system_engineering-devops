@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # write a  script that  configures Nginx on an Ubuntu machine.
 
-# Updating  the package list
+# updating  the package list
 apt-get update
 
-# Installing Nginx
+# installing Nginx
 apt-get install -y nginx
 
 # Configuring  Nginx
@@ -25,4 +25,3 @@ sudo sed -i '/http {/a \        add_header X-Served-By $hostname;' /etc/nginx/ng
 
 # Restarting  Nginx
 service nginx restart
-
