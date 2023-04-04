@@ -1,11 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# write a  script that  configures Nginx on an Ubuntu machine.
 
-# Install Nginx
-sudo apt-get update
-sudo apt-get install -y nginx
+# Updating  the package list
+apt-get update
 
-# Add custom header to Nginx configuration
-echo 'add_header X-Served-By $hostname;' | sudo tee -a /etc/nginx/nginx.conf
+# Installing Nginx
+apt-get install -y nginx
 
-# Restart Nginx
-sudo systemctl restart nginx
+# Configuring  Nginx
+echo "
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html;
+    location / {
+        return 200 'Hello World!';
+    }
+}
+" > /etc/nginx/sites-available/default
+
+# modify ngix configuration file
+sudo sed -i '/http {/a \        add_header X-Served-By $hostname;' /etc/nginx/nginx.conf
+
+# Restarting  Nginx
+service nginx restart
+
