@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Update package lists
+# Installs and setup haproxy
 
-sudo apt-get update
+# Install HAproxy
+sudo apt-get -y update
+sudo apt-get -y install
 
-# Installing HAproxy
-sudo apt-get -y install haproxy
-
-# Configuring HAproxy to send traffic to web-01 and web-02 using round-robin algorithm
-sudo tee /etc/haproxy/haproxy.cfg > /dev/null <<EOF
+# Configure HAproxy
+sudo cp /etc/haproxy/haproxy.cfg{,.bak} # backup the original config file
+sudo bash -c 'cat << EOF > /etc/haproxy/haproxy.cfg
 global
     log /dev/log    local0
     log /dev/log    local1 notice
@@ -17,28 +17,27 @@ global
     daemon
 
 defaults
-    log     global
+    log global
     mode    http
     option  httplog
     option  dontlognull
+    retries 3
     timeout connect 5000
     timeout client  50000
     timeout server  50000
 
-frontend http_front
+frontend http-in
     bind *:80
-    mode http
-    default_backend http_back
+    default_backend servers
 
-backend http_back
-    mode http
+backend servers
     balance roundrobin
     server 148571-web-01 54.237.32.137:80 check
     server 148571-web-02 35.153.231.48:80 check
-EOF
+EOF'
 
-# Enabling HAproxy init script
+# Enable HAproxy init script
 sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
 
-# Restarting HAproxy service
-sudo systemctl restart haproxy.service
+# Restart HAproxy service
+sudo service haproxy restart
