@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
-# Write a bash script that Configure your domain zone so that the subdomain www points to your load-balancer IP (lb-01)
+# A script that configures your domain zone so that
+#the sub domain www points to my load balancer ip(ld-01)
 
-# Checking that domain argument is provided
-if [ $# -lt 1 ]; then
-  echo "Usage: $0 <domain> [subdomain]"
-  exit 1
+domain_information () {
+    line=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
+    echo "$2 $line" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+}
+
+#listing the subdomain arguments
+if [ "$#" == 1 ]
+then
+  domain_information "$1" "www"
+  domain_information "$1" "lb-01"
+  domain_information "$1" "web-01"
+  domain_information "$1" "web-02"
+elif [ "$#" == 2 ]
+then
+  domain_information "$1" "$2"
 fi
-
-domain=$1
-subdomain=${2:-"www lb-01 web-01 web-02"}
-
-# Looping  through subdomains and displaying their DNS records
-for sd in $subdomain; do
-  rec=$(dig +short $sd.$domain)
-  if [ -n "$rec" ]; then
-    echo "The subdomain $sd is a $(dig +short $sd.$domain | awk '{print $1}') record and points to $rec"
-  fi
-done
