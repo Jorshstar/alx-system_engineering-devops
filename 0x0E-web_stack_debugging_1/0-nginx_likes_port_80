@@ -1,0 +1,16 @@
+#!/bin/bash
+# Bash script that fix Nginx installation
+# configuring  Nginx to listening on port 80
+
+sudo echo "
+server {
+    listen 80;
+    server_name example.com;
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}" > /etc/nginx/sites-available/default
+
+# Restart Nginx to apply the changes
+Service nginx restart
