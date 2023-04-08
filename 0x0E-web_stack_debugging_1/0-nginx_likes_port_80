@@ -1,16 +1,6 @@
 #!/usr/bin/env bash
-# Bash script that fix Nginx installation
-# configuring  Nginx to listening on port 80
+# A bash script that installs and fixes the 
+#Nginx configuration file to listen on port 80
 
-sudo echo "
-server {
-    listen 80;
-    server_name example.com;
-    location / {
-        root /var/www/html;
-        index index.html;
-    }
-}" > /etc/nginx/sites-available/default
-
-# Restart Nginx to apply the changes
-Service nginx restart
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
