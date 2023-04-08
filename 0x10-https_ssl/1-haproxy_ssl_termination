@@ -1,0 +1,30 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+frontend http-in
+    bind *:80
+    mode http
+    bind *:443 ssl crt /etc/haproxy/certs/www.jorshstar.tech.pem
+    redirect scheme https if !{ ssl_fc }
+    stats uri /haproxy?stats
+    default_backend servers
+
+backend servers
+    balance roundrobin
+    server 148571-web-01 54.237.32.137:80 check
+    server 148571-web-02 35.153.231.48:80 check
