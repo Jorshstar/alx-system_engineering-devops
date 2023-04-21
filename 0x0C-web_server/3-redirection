@@ -1,30 +1,31 @@
 #!/usr/bin/env bash
-# A bash scripts that Installs, configures, and starts the server
-apt-get update
-apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-mkdir -p /var/www/html/
-sudo chmod -R 755 /var/www
-echo 'Hello World!' > /var/www/html/index.html
-SERVER_CONFIG=\
-"server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
-	root /var/www/html;
-	index index.html index.htm index.nginx-debian.html;
-	server_name _;
-	location / {
-		try_files \$uri \$uri/ =404;
-	}
-	if (\$request_filename ~ redirect_me){
-		rewrite ^ https://sketchfab.com/bluepeno/models permanent;
-	}
-}"
 
-bash -c "echo -e '$SERVER_CONFIG' > /etc/nginx/sites-enabled/default"
+# This script configures an Nginx server to redirect a specific URL to another page with a "301 Moved Permanently" status code
 
-if [ "$(pgrep -c nginx)" -le 0 ]; then
-	service nginx start
-else
-	service nginx restart
-fi
+# Update the system
+sudo apt-get update
+
+# Install Nginx if it is not already installed
+sudo apt-get install nginx -y
+
+# Create a new Nginx server block configuration file for the redirect
+sudo tee /etc/nginx/sites-available/redirect > /dev/null <<EOF
+server {
+    listen 80;
+    server_name jorshstar.tech;
+    return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+}
+EOF
+# Replace "example.com" with your own domain name, and replace the URL with the one you want to redirect to
+
+# Create a symbolic link from the new configuration file to the sites-enabled directory
+sudo ln -s /etc/nginx/sites-available/redirect /etc/nginx/sites-enabled/
+
+# Remove the default symbolic link from the sites-enabled directory
+sudo rm /etc/nginx/sites-enabled/default
+
+# Test the Nginx configuration for syntax errors
+sudo nginx -t
+
+# If there are no errors, reload the Nginx configuration to apply the changes
+sudo service nginx reload
