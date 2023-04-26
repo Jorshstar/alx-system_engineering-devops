@@ -20,7 +20,8 @@ user_data = user_response.json()
 employee_name = user_data['name']
 
 # Script that fetch user's todo list
-todo_response = requests.get(base_url + 'todos?userId={}'.format(employee_id))
+todo_response = requests.get(base_url + 'todos?userId={}'
+        .format(employee_id))
 todo_data = todo_response.json()
 
 # script that Count the number of completed tasks and the total number of tasks
