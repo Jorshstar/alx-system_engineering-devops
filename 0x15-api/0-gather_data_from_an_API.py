@@ -31,6 +31,7 @@ for task in todo_data:
         completed_tasks.append(task['title'])
 
 # Script to Print the output in the specified format
-print("Employee {} is done with tasks({}/{}):".format(employee_name, num_completed_tasks, num_total_tasks))
+print("Employee {} is done with tasks({}/{}):"
+        .format(employee_name, num_completed_tasks, num_total_tasks))
 for task in completed_tasks:
     print("\t {}".format(task))
