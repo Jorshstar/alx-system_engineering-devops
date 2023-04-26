@@ -38,4 +38,4 @@ for task in todo_data:
 print("Employee {} is done with tasks({}/{}):"
         .format(employee_name, num_completed_tasks, num_total_tasks))
     for task in completed_tasks:
-        print("\t {}".format(task))
+    print("\t {}".format(task))
