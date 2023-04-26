@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
     sys.exit(1)
 
 employee_id = sys.argv[1]
-base_url = 'https://jsonplaceholder.typicode.com/'
+    base_url = 'https://jsonplaceholder.typicode.com/'
 
 # script that fetch user information
 user_response = requests.get(base_url + 'users/{}'.format(employee_id))
@@ -37,5 +37,5 @@ for task in todo_data:
 # script that Print the output in the specified format
 print("Employee {} is done with tasks({}/{}):"
         .format(employee_name, num_completed_tasks, num_total_tasks))
-for task in completed_tasks:
-    print("\t {}".format(task))
+    for task in completed_tasks:
+        print("\t {}".format(task))
