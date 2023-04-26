@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 # Write a Python script that
-# using this REST API, for a given employee ID
-# returns information about his/her Todo list progress
+#     using this REST API, for a given employee ID
+#     returns information about his/her Todo list progress
 
 import requests
 import sys
@@ -35,6 +35,7 @@ for task in todo_data:
         completed_tasks.append(task['title'])
 
 # script that Print the output in the specified format
-print("Employee {} is done with tasks({}/{}):".format(employee_name, num_completed_tasks, num_total_tasks))
+print("Employee {} is done with tasks({}/{}):"
+        .format(employee_name, num_completed_tasks, num_total_tasks))
 for task in completed_tasks:
     print("\t {}".format(task))
