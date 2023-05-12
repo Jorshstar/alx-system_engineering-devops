@@ -1,14 +1,6 @@
-# Puppet manifest for configuring Apache LogLevel to debug
+# Fix 500 error when a GET HTTP method is requested to Apache web server
 
-# Ensure Apache configuration file
-file { '/etc/apache2/apache2.conf':
-  ensure  => file,
-  content => "LogLevel debug\n",
-}
-
-# Restart Apache service if the configuration file changes
-service { 'apache2':
-  ensure     => running,
-  enable     => true,
-  subscribe  => File['/etc/apache2/apache2.conf'],
+exec {'replace':
+  provider => shell,
+  command  => 'sed -i "s/phpp/php/g" /var/www/html/wp-settings.php'
 }
